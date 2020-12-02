@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <unordered_set>
 
 using namespace std;
 
@@ -9,7 +7,6 @@ int main()
 {
     string line;
     string filename = R"(C:\Users\Dan\Desktop\AOC2020\day2\input.txt)";
-    vector<int> v;
     ifstream file(filename);
 
     if (!file.is_open())
@@ -39,7 +36,6 @@ int main()
 
         if (count <= max && count  >= min)
             total++;
-        
     }
 
     cout << total << endl;
