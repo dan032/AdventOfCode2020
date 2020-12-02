@@ -10,7 +10,7 @@ int findProduct(const vector<int>&);
 int main()
 {
     string line;
-    string filename = R"(C:\Users\Dan\Desktop\AOC2020\input.txt)";
+    string filename = R"(C:\Users\Dan\Desktop\AOC2020\day1\input.txt)";
     vector<int> v;
     ifstream file(filename);
 
@@ -25,7 +25,6 @@ int main()
         getline(file, line);
         v.push_back(stoi(line));
     }
-
     file.close();
     cout << findProduct(v) << endl;
     return EXIT_SUCCESS;
