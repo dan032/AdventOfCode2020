@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <unordered_set>
 
 using namespace std;
+
+void parseLine(string, int*);
 
 int main()
 {
@@ -20,21 +21,22 @@ int main()
     while(file.good())
     {
         getline(file, line);
-
-        int dashIdx = line.find('-');
-        int min = stoi(line.substr(0, dashIdx ));
-        int max = stoi(line.substr(dashIdx + 1, line.find(' ')));
-        char c = line.at(line.find(' ') + 1);
-        string s = line.substr(line.find(' ') + 4);
-
-        if ((s[min - 1] == c) ^ (s[max - 1] == c))
-        {
-            total++;
-        }
+        parseLine(line, &total);
     }
 
     cout << total << endl;
     file.close();
-
     return EXIT_SUCCESS;
+}
+
+void parseLine(string line, int* total)
+{
+    int dashIdx = line.find('-');
+    int min = stoi(line.substr(0, dashIdx ));
+    int max = stoi(line.substr(dashIdx + 1, line.find(' ')));
+    char c = line.at(line.find(' ') + 1);
+    string s = line.substr(line.find(' ') + 4);
+
+    if ((s[min - 1] == c) ^ (s[max - 1] == c))
+        (*total)++;
 }

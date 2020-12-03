@@ -3,6 +3,8 @@
 
 using namespace std;
 
+void parseLine(string, int*);
+
 int main()
 {
     string line;
@@ -18,28 +20,28 @@ int main()
     int total = 0;
     while(file.good())
     {
-        int count = 0;
-
         getline(file, line);
-
-        int dashIdx = line.find('-');
-        int min = stoi(line.substr(0, dashIdx ));
-        int max = stoi(line.substr(dashIdx + 1, line.find(' ')));
-        char c = line.at(line.find(' ') + 1);
-        string s = line.substr(line.find(' ') + 3);
-
-        for (char i : s)
-        {
-            if (i == c)
-                count++;
-        }
-
-        if (count <= max && count  >= min)
-            total++;
+        parseLine(line, &total);
     }
 
     cout << total << endl;
     file.close();
-
     return EXIT_SUCCESS;
+}
+
+void parseLine(string line, int* total) {
+    int count = 0;
+    int dashIdx = line.find('-');
+    int min = stoi(line.substr(0, dashIdx));
+    int max = stoi(line.substr(dashIdx + 1, line.find(' ')));
+    char c = line.at(line.find(' ') + 1);
+    string s = line.substr(line.find(' ') + 4);
+
+    for (char i : s) {
+        if (i == c)
+            count++;
+    }
+
+    if (count <= max && count >= min)
+        (*total)++;
 }
