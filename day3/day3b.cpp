@@ -39,10 +39,7 @@ int main()
         while(yIdx < v.size())
         {
             if (v[yIdx][xIdx] == '#')
-            {
                 count++;
-                cout << yIdx << ", " << xIdx << endl;
-            }
 
             yIdx += value[1];
             xIdx += value[0];
