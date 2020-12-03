@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_set>
 
 using namespace std;
 
@@ -45,7 +44,6 @@ int main()
             xIdx += value[0];
             if (xIdx >= width) xIdx -= width;
         }
-        cout << count << endl << endl;
         total *= count;
     }
 
