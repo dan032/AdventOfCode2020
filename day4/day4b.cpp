@@ -57,7 +57,6 @@ int main()
         {
             count++;
         }
-        m.clear();
     }
 
     cout << count << endl;
