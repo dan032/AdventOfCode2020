@@ -7,7 +7,7 @@
 using namespace std;
 
 map<string, string> loadVectorIntoMap(const vector<string> &v);
-bool isValid(map<string, string>, const string&);
+bool validateValue(map<string, string> m, const string &key);
 
 int main()
 {
@@ -45,8 +45,8 @@ int main()
         bool valid = true;
         for (const string& key : keyValues)
         {
-            bool isEntryValid = isValid(m, key);
-            if (!isEntryValid)
+            bool validValue = validateValue(m, key);
+            if (!validValue)
             {
                 valid = false;
             }
@@ -81,7 +81,7 @@ map<string, string> loadVectorIntoMap(const vector<string>& v)
     return m;
 }
 
-bool isValid(map<string, string> m, const string& key)
+bool validateValue(map<string, string> m, const string& key)
 {
     if (m.find(key) == m.end())
     {
