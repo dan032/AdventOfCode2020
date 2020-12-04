@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 #include <regex>
-#include <string>
 
 using namespace std;
 
@@ -46,8 +45,8 @@ int main()
         bool valid = true;
         for (const string& key : keyValues)
         {
-            bool validString = isValid(m, key);
-            if (!validString)
+            bool isEntryValid = isValid(m, key);
+            if (!isEntryValid)
             {
                 valid = false;
             }
