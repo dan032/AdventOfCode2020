@@ -42,7 +42,7 @@ int main()
         // Separate entry into key value pairs and insert into map
         map<string, string> m = loadVectorIntoMap(v);
 
-        // Loop through keys amd validate entry
+        // Loop through keys and validate entry
         bool valid = true;
         for (const string& key : keyValues)
         {
@@ -74,7 +74,9 @@ map<string, string> loadVectorIntoMap(const vector<string>& v)
         vector<string> entries{
                 istream_iterator<string>(iss), {}
         };
-        for (const string& entry : entries){
+
+        for (const string& entry : entries)
+        {
             m[entry.substr(0, s.find(':'))] = entry.substr(s.find(':') + 1);
         }
     }
@@ -99,6 +101,7 @@ bool isValid(map<string, string> m, const string& key)
             return false;
         }
     }
+
     if (key == "iyr")
     {
         int iyr = stoi(m[key]);
@@ -116,21 +119,26 @@ bool isValid(map<string, string> m, const string& key)
             return false;
         }
     }
+
     if (key == "hgt")
     {
-        if (m[key].length() < 3) {
+        if (m[key].length() < 3)
+        {
             return false;
         }
 
         string unit = m[key].substr(m[key].length() - 2);
         int hgt = stoi(m[key].substr(0, m[key].length() - 2));
+
         if (unit == "cm")
         {
             if (hgt < 150 || hgt > 193)
             {
                 return false;
             }
+
         }
+
         else if (unit == "in")
         {
             if (hgt < 59 || hgt > 79)
@@ -160,6 +168,7 @@ bool isValid(map<string, string> m, const string& key)
             if (m[key] == color)
             {
                 validEye = true;
+                break;
             }
         }
 
@@ -176,6 +185,5 @@ bool isValid(map<string, string> m, const string& key)
             return false;
         }
     }
-
     return true;
 }
