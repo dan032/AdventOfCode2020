@@ -19,7 +19,8 @@ int main()
         return EXIT_FAILURE;
     }
 
-    while(file.good()) {
+    while(file.good())
+    {
         getline(file, line);
 
         int l = 0, r = 127;
@@ -27,9 +28,10 @@ int main()
         {
             if (line[i] == 'F')
             {
-                r -= (r-l + 1)/2;
+                r -= (r - l + 1) / 2;
             }
-            else if (line[i] == 'B') {
+            else if (line[i] == 'B')
+            {
                 l += (r - l + 1) / 2;
             }
         }
@@ -42,15 +44,15 @@ int main()
         {
             if (line[i] == 'R')
             {
-                l += (r-l + 1)/2;
+                l += (r - l + 1) / 2;
             }
-            else if (line[i] == 'L') {
+            else if (line[i] == 'L')
+            {
                 r -= (r - l + 1) / 2;
             }
         }
 
-        int col = line[9] == 'R' ? max(l,r) : min(l,r);
-
+        int col = line[9] == 'R' ? max(l, r) : min(l, r);
         v.push_back((row * 8 ) + col);
     }
 
@@ -60,10 +62,9 @@ int main()
     {
         if (v[i + 1] - v[i] > 1)
         {
-            cout << (v[i + 1] + v[i])/2 << endl;
+            cout << (v[i + 1] + v[i]) / 2 << endl;
         }
     }
-
 
     file.close();
     return EXIT_SUCCESS;
