@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <regex>
 
 using namespace std;
 
-map<string, string> loadVectorIntoMap(const vector<string>&);
+unordered_map<string, string> loadVectorIntoMap(const vector<string>&);
 
 int main()
 {
@@ -38,7 +38,7 @@ int main()
         }
 
         // Separate entry into key value pairs and insert into map
-        map<string, string> m = loadVectorIntoMap(v);
+        unordered_map<string, string> m = loadVectorIntoMap(v);
 
         bool invalid = false;
         for (const string& key : keyValues)
@@ -65,9 +65,9 @@ int main()
     return EXIT_SUCCESS;
 }
 
-map<string, string> loadVectorIntoMap(const vector<string>& v)
+unordered_map<string, string> loadVectorIntoMap(const vector<string>& v)
 {
-    map<string, string> m;
+    unordered_map<string, string> m;
     for (const string& s : v)
     {
         istringstream iss(s);

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <regex>
 
 using namespace std;
 
-map<string, string> loadVectorIntoMap(const vector<string> &v);
-bool validateValue(map<string, string> m, const string &key);
+unordered_map<string, string> loadVectorIntoMap(const vector<string>&);
+bool validateValue(unordered_map<string, string>, const string&);
 
 int main()
 {
@@ -39,7 +39,7 @@ int main()
         }
 
         // Separate entry into key value pairs and insert into map
-        map<string, string> m = loadVectorIntoMap(v);
+        unordered_map<string, string> m = loadVectorIntoMap(v);
 
         // Loop through keys and validate entry
         bool valid = true;
@@ -63,9 +63,9 @@ int main()
     return EXIT_SUCCESS;
 }
 
-map<string, string> loadVectorIntoMap(const vector<string>& v)
+unordered_map<string, string> loadVectorIntoMap(const vector<string>& v)
 {
-    map<string, string> m;
+    unordered_map<string, string> m;
     for (const string& s : v)
     {
         istringstream iss(s);
@@ -81,7 +81,7 @@ map<string, string> loadVectorIntoMap(const vector<string>& v)
     return m;
 }
 
-bool validateValue(map<string, string> m, const string& key)
+bool validateValue(unordered_map<string, string> m, const string& key)
 {
     if (m.find(key) == m.end())
     {
