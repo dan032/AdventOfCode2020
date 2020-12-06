@@ -17,27 +17,27 @@ int main()
         return EXIT_FAILURE;
     }
 
-    unordered_set<char> m;
+    unordered_set<char> s;
     while(file.good())
     {
         getline(file, line);
         if (line == "\r")
         {
-            total += m.size();
-            m.clear();
+            total += s.size();
+            s.clear();
         }
 
         for (char c : line)
         {
             if (c == '\r') continue;
-            if (m.find(c) == m.end())
+            if (s.find(c) == s.end())
             {
-                m.insert(c);
+                s.insert(c);
             }
         }
     }
 
-    total += m.size();
+    total += s.size();
     cout << total << endl;
     file.close();
     return EXIT_SUCCESS;
