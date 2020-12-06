@@ -21,14 +21,14 @@ int main()
     while(file.good())
     {
         getline(file, line);
-        if (line == "\r")
+        if (line == "\r")       // Means I have hit a new group, add the current group count to total and clear
         {
             total += s.size();
             s.clear();
         }
 
-        for (char c : line)
-        {
+        for (char c : line)     // Iterate over each line and count the number of unique letters in the group.
+        {                       // Set is only cleared when a new group is started
             if (c == '\r') continue;
             if (s.find(c) == s.end())
             {
