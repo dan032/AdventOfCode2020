@@ -66,7 +66,7 @@ int main()
             v[nop].first ="nop";
         }
     }
-    
+
     cout << acc << endl;
     file.close();
     return EXIT_SUCCESS;
