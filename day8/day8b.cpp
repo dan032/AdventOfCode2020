@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_map>
-#include <map>
-#include <forward_list>
+#include <unordered_set>
 
 using namespace std;
 
-bool testInfinite(vector<pair<string,int>> v);
-void findLoop(map<int, pair<string, int>> &m, vector<int> &jmps, vector<int> &nops, vector<pair<string, int>> v);
+bool checkIntcode(vector<pair<string, int>> v, bool initializeVectors);
 
-int acc = 0;
+int acc = 0;                        // Accumulator for final result
+vector<int> jmps;                   // Will be used to brute force all jump op codes
+vector<int> nops;                   // Will be used to brute force all nop op codes
+
 int main()
 {
     string line;
@@ -24,8 +24,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-
-    while(file.good())
+    while(file.good())          // Populate vector with all op codes and their values
     {
         getline(file, line);
         string op = line.substr(0, line.find(' '));
@@ -34,18 +33,14 @@ int main()
         v.push_back(p);
     }
 
-    map<int, pair<string, int>> m;
-    vector<int> jmps;
-    vector<int> nops;
-
-    findLoop(m, jmps, nops, v);
+    checkIntcode(v, true);     // Initializes vectors
 
     bool pass = false;
-    for (int jmp : jmps)
+    for (int jmp : jmps)         // Brute force to see if changing jump ops removes infinite loop
     {
         v[jmp].first = "nop";
         acc = 0;
-        bool infinite = testInfinite(v);
+        bool infinite = checkIntcode(v, false);
         if (!infinite){
             pass = true;
             break;
@@ -55,11 +50,11 @@ int main()
 
     if (!pass)
     {
-        for (int nop : nops)
+        for (int nop : nops)     // Brute force to see if changing nop ops removes infinite loop
         {
             acc = 0;
             v[nop].first = "jmp";
-            bool infinite = testInfinite(v);
+            bool infinite = checkIntcode(v, false);
             if (!infinite){
                 break;
             }
@@ -72,44 +67,9 @@ int main()
     return EXIT_SUCCESS;
 }
 
-void findLoop(map<int, pair<string, int>> &m, vector<int> &jmps, vector<int> &nops, vector<pair<string, int>> v)
+bool checkIntcode(vector<pair<string, int>> v, bool initializeVectors)
 {
-    for (int i = 0; i < v.size(); i++)
-    {
-        if (v[i].first == "acc")
-        {
-            if (m.find(i) != m.end())
-            {
-                break;
-            }
-            m[i] = v[i];
-        }
-        else if (v[i].first == "jmp")
-        {
-            if (m.find(i) != m.end())
-            {
-                break;
-            }
-            m[i] = v[i];
-            jmps.push_back(i);
-            i += v[i].second - 1;
-        }
-
-        else if (v[i].first == "nop")
-        {
-            if (m.find(i) != m.end())
-            {
-                break;
-            }
-            m[i] = v[i];
-            nops.push_back(i);
-        }
-    }
-}
-
-bool testInfinite(vector<pair<string,int>> v)
-{
-    map<int, pair<string, int>> m;
+    unordered_set<int> m;      // Will be stored to check if op code has already been called
     for (int i = 0; i < v.size(); i++)
     {
         if (v[i].first == "acc")
@@ -118,6 +78,7 @@ bool testInfinite(vector<pair<string,int>> v)
             {
                 return true;
             }
+            m.insert(i);
             acc += v[i].second;
         }
         else if (v[i].first == "jmp")
@@ -126,8 +87,12 @@ bool testInfinite(vector<pair<string,int>> v)
             {
                 return true;
             }
-            m[i] = v[i];
+            if (initializeVectors)
+            {
+                jmps.push_back(i);
+            }
 
+            m.insert(i);
             i += v[i].second - 1;
         }
 
@@ -137,7 +102,11 @@ bool testInfinite(vector<pair<string,int>> v)
             {
                 return true;
             }
-            m[i] = v[i];
+            if (initializeVectors)
+            {
+                nops.push_back(i);
+            }
+            m.insert(i);
         }
     }
     return false;
