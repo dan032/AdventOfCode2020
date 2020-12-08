@@ -9,7 +9,7 @@ typedef struct {
 } Bag;
 
 
-void checkBag(unordered_map<string,Bag> m, const unordered_map<string, int> &current);
+void checkBag(unordered_map<string,Bag> m, const Bag &current);
 
 int total = 0;
 
@@ -50,7 +50,7 @@ int main()
     }
 
     // Recursively go through the map, starting with shiny gold.
-    unordered_map<string, int> sg = m["shiny gold"].subBags;
+    Bag sg = m["shiny gold"];
     checkBag(m, sg);
 
     file.close();
@@ -58,14 +58,14 @@ int main()
     return EXIT_SUCCESS;
 }
 
-void checkBag(unordered_map<string, Bag> m, const unordered_map<string, int>& current)
+void checkBag(unordered_map<string, Bag> m, const Bag &current)
 {
-    for (auto& e : current)
+    for (auto& e : current.subBags)
     {
         for (int i = 0; i < e.second; i++)
         {
             total++;
-            checkBag(m, m[e.first].subBags);
+            checkBag(m, m[e.first]);
         }
     }
 }
