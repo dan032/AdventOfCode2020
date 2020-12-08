@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_map>
-#include <map>
+#include <unordered_set>
 
 using namespace std;
 void findAccumulatorValue(vector<pair<string, int>>);
@@ -40,8 +39,7 @@ int main()
 
 void findAccumulatorValue(vector<pair<string, int>> v)
 {
-    map<int, pair<string, int>> m;
-
+    unordered_set<int> m;
     for (int i = 0; i < v.size(); i++)
     {
         if (v[i].first == "acc")
@@ -50,7 +48,7 @@ void findAccumulatorValue(vector<pair<string, int>> v)
             {
                 break;
             }
-            m[i] = v[i];
+            m.insert(i);
             acc += v[i].second;
         }
         else if (v[i].first == "jmp")
@@ -59,7 +57,7 @@ void findAccumulatorValue(vector<pair<string, int>> v)
             {
                 break;
             }
-            m[i] = v[i];
+            m.insert(i);
 
             i += v[i].second - 1;
         }
@@ -70,7 +68,7 @@ void findAccumulatorValue(vector<pair<string, int>> v)
             {
                 break;
             }
-            m[i] = v[i];
+            m.insert(i);
         }
     }
 }

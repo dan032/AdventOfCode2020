@@ -33,7 +33,7 @@ int main()
         v.push_back(p);
     }
 
-    checkIntcode(v, true);     // Initializes vectors
+    checkIntcode(v, true);     // Initializes vectors that will be used for brute forcing
 
     bool pass = false;
     for (int jmp : jmps)         // Brute force to see if changing jump ops removes infinite loop
@@ -70,6 +70,7 @@ int main()
 bool checkIntcode(vector<pair<string, int>> v, bool initializeVectors)
 {
     unordered_set<int> m;      // Will be stored to check if op code has already been called
+
     for (int i = 0; i < v.size(); i++)
     {
         if (v[i].first == "acc")
