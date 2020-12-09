@@ -28,7 +28,7 @@ private:
 public:
     explicit IntCodeMachine(std::string filename);
     int ParseInput();
-    bool AnalyzeInfiniteLoop(bool initializeOpsLoopVector);
+    bool AnalyzeInfiniteLoop(bool initializeOpsIndexVector);
     void TryRemoveInfiniteLoop();
     int GetAccumulator();
 };

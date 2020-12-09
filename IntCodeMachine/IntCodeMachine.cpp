@@ -37,7 +37,7 @@ int IntCodeMachine::ParseInput()
     return 0;
 }
 
-bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
+bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsIndexVector)
 {
     std::unordered_set<int> indexSet;      // Will store index to check if op code has already been called
     for (int i = 0; i < this->codeData.instructionVector.size(); i++)
@@ -51,7 +51,7 @@ bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
         }
         else if (this->codeData.instructionVector[i].opCode == "jmp")
         {
-            if (initializeOpsLoopVector)
+            if (initializeOpsIndexVector)
             {
                 this->codeData.opsIndexVector.push_back(i);
             }
@@ -59,7 +59,7 @@ bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
         }
         else if (this->codeData.instructionVector[i].opCode == "nop")
         {
-            if (initializeOpsLoopVector)
+            if (initializeOpsIndexVector)
             {
                 this->codeData.opsIndexVector.push_back(i);
             }
