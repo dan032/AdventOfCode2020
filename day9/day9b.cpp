@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <deque>
-
 
 using namespace std;
 int main()
@@ -10,8 +8,6 @@ int main()
     string line;
     string filename = R"(C:\Users\Dan\Desktop\AOC2020\day9\input.txt)";
     vector<long> v;
-    deque<long> q;
-
     ifstream file(filename);
 
     if (!file.is_open())
@@ -26,46 +22,32 @@ int main()
         v.push_back(stol(line));
     }
 
+    int l = 0;
     int r = 25;
-
-    for (int i = 0; i < r; i++)
-    {
-        q.push_back(v[i]);
-    }
-
     long goal = 1492208709;
 
     while(r < v.size())
     {
         long total = 0;
-
-        for (long i : q)
+        for (int i = l; i < r; i++)
         {
-            total += i;
+            total += v[i];
         }
 
         if (total == goal)
         {
-            long min = q[0], max = q[0];
-
-            for (long j : q)
+            long min = v[l], max = v[l];
+            for (int i = l; i < r; i++)
             {
-                min = j < min ? j : min;
-                max = j > max ? j : max;
+                min = v[i] < min ? v[i] : min;
+                max = v[i] > max ? v[i] : max;
             }
-
             cout << min + max << endl;
             break;
         }
 
-        if (total < goal)
-        {
-            q.push_back(v[r++]);
-        }
-
-        else{
-            q.pop_front();
-        }
+        r = total < goal ? ++r : r;
+        l = total > goal ? ++l : l;
     }
 
     file.close();
