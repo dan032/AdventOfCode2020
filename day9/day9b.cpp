@@ -10,8 +10,8 @@ int main()
 {
     string line;
     string filename = R"(C:\Users\Dan\Desktop\AOC2020\day9\input.txt)";
-    vector<long long> v;
-    deque<long long> q;
+    vector<long> v;
+    deque<long> q;
 
     ifstream file(filename);
 
@@ -27,32 +27,31 @@ int main()
         v.push_back(stol(line));
     }
 
-    int l = 0;
     int r = 25;
 
-    for (int i = l; i < r; i++)
+    for (int i = 0; i < r; i++)
     {
         q.push_back(v[i]);
     }
 
-    long long goal = 1492208709;
+    long goal = 1492208709;
 
     while(r < v.size())
     {
         unordered_set<long> s;
-        long long total = 0;
-        for (long long i : q)
+        long total = 0;
+
+        for (long i : q)
         {
             total += i;
         }
 
         if (total == goal)
         {
+            long min = q[0];
+            long max = q[0];
 
-            long long min = q[0];
-            long long max = q[0];
-
-            for (long long j : q)
+            for (long j : q)
             {
                 if (j < min)
                 {

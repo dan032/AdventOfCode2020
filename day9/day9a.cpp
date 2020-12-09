@@ -10,8 +10,8 @@ int main()
 {
     string line;
     string filename = R"(C:\Users\Dan\Desktop\AOC2020\day9\input.txt)";
-    vector<long long> v;
-    deque<long long> q;
+    vector<long> v;
+    deque<long> q;
 
     ifstream file(filename);
 
@@ -27,10 +27,9 @@ int main()
         v.push_back(stol(line));
     }
 
-    int l = 0;
     int r = 25;
 
-    for (int i = l; i < r; i++)
+    for (int i = 0; i < r; i++)
     {
         q.push_back(v[i]);
     }
@@ -55,7 +54,6 @@ int main()
 
         q.push_back(v[r++]);
         q.pop_front();
-        l++;
     }
 
     file.close();
