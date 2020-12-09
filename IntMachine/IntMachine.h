@@ -12,15 +12,15 @@
 
 class IntMachine{
 private:
+    int acc;
+    std::string filename;
     std::vector<int> opsVector;
     std::vector<std::pair<std::string, int>> dataVector;
-    std::string filename;
-    int acc;
 public:
     IntMachine();
     explicit IntMachine(std::string filename);
-    void parseInput();
-    bool checkInfiniteLoop(bool initializeOpsVectors);
+    int parseInput();
+    bool analyzeInfiniteLoop(bool initializeOpsVectors);
     void tryRemoveInfiniteLoop();
     int getAccumulator();
 };

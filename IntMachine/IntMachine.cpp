@@ -16,16 +16,17 @@ IntMachine::IntMachine(std::string filename)
     this->filename = std::move(filename);
 }
 
-void IntMachine::parseInput()
+int IntMachine::parseInput()
 {
-    std::string line, operation;
     int value = 0;
+    std::string line, operation;
     std::pair<std::string, int> opPair;
     std::ifstream file(this->filename);
 
     if (!file.is_open())
     {
-        throw std::invalid_argument("Invalid File");
+        perror("Invalid File\n");
+        return -1;
     }
 
     while(file.good())                  // Populate vector with all op codes and their values
@@ -37,9 +38,10 @@ void IntMachine::parseInput()
         this->dataVector.push_back(opPair);
     }
     file.close();
+    return 0;
 }
 
-bool IntMachine::checkInfiniteLoop(bool initializeOpsVectors)
+bool IntMachine::analyzeInfiniteLoop(bool initializeOpsVectors)
 {
     std::unordered_set<int> m;      // Will store index to check if op code has already been called
     for (int i = 0; i < this->dataVector.size(); i++)
@@ -79,13 +81,13 @@ void IntMachine::tryRemoveInfiniteLoop()
         if (this->dataVector[op].first == "jmp")
         {
             this->dataVector[op].first = "nop";
-            infinite = this->checkInfiniteLoop(false);
+            infinite = this->analyzeInfiniteLoop(false);
             this->dataVector[op].first ="jmp";
         }
         else if (this->dataVector[op].first == "nop")
         {
             this->dataVector[op].first = "jmp";
-            infinite = this->checkInfiniteLoop(false);
+            infinite = this->analyzeInfiniteLoop(false);
             this->dataVector[op].first ="nop";
         }
 

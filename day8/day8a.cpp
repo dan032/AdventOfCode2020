@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include "../IntMachine/IntMachine.h"
 
 using namespace std;
@@ -7,14 +8,10 @@ int main()
 {
     string filename = R"(C:\Users\Dan\Desktop\AOC2020\day8\input.txt)";
     IntMachine machine = IntMachine(filename);
-    try{
-        machine.parseInput();
-    }
-    catch(exception& exception){
-        cout  << exception.what() << endl;
-    }
+    int successful = machine.parseInput();
+    assert(successful != -1);
 
-    machine.checkInfiniteLoop(false);
+    machine.analyzeInfiniteLoop(false);
     cout << machine.getAccumulator() << endl;
     return EXIT_SUCCESS;
 }
