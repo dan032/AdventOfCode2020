@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_set>
 #include <deque>
 
 
@@ -38,7 +37,6 @@ int main()
 
     while(r < v.size())
     {
-        unordered_set<long> s;
         long total = 0;
 
         for (long i : q)
