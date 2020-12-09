@@ -46,19 +46,12 @@ int main()
 
         if (total == goal)
         {
-            long min = q[0];
-            long max = q[0];
+            long min = q[0], max = q[0];
 
             for (long j : q)
             {
-                if (j < min)
-                {
-                    min = j;
-                }
-                if (j > max)
-                {
-                    max = j;
-                }
+                min = j < min ? j : min;
+                max = j > max ? j : max;
             }
 
             cout << min + max << endl;
