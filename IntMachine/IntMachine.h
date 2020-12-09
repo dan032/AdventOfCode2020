@@ -12,7 +12,7 @@
 
 typedef struct {
     int accumulator;
-    std::vector<int> opsVector;
+    std::vector<int> opsLoopVector;
     std::vector<std::pair<std::string, int>> bootCodeVector;
 } CodeData;
 
@@ -22,9 +22,9 @@ private:
     CodeData codeData;
 public:
     explicit IntMachine(std::string filename);
-    int parseInput();
-    bool analyzeInfiniteLoop(bool initializeOpsVectors);
-    void tryRemoveInfiniteLoop();
-    int getAccumulator();
+    int ParseInput();
+    bool AnalyzeInfiniteLoop(bool initializeOpsLoopVector);
+    void TryRemoveInfiniteLoop();
+    int GetAccumulator();
 };
 #endif //AOC2020_INTMACHINE_H

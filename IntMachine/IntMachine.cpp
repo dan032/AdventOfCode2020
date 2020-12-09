@@ -11,7 +11,7 @@ IntMachine::IntMachine(std::string filename)
     this->filename = std::move(filename);
 }
 
-int IntMachine::parseInput()
+int IntMachine::ParseInput()
 {
     int value = 0;
     std::string line, operation;
@@ -36,7 +36,7 @@ int IntMachine::parseInput()
     return 0;
 }
 
-bool IntMachine::analyzeInfiniteLoop(bool initializeOpsVectors)
+bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
 {
     std::unordered_set<int> m;      // Will store index to check if op code has already been called
     for (int i = 0; i < this->codeData.bootCodeVector.size(); i++)
@@ -50,39 +50,39 @@ bool IntMachine::analyzeInfiniteLoop(bool initializeOpsVectors)
         }
         else if (this->codeData.bootCodeVector[i].first == "jmp")
         {
-            if (initializeOpsVectors)
+            if (initializeOpsLoopVector)
             {
-                this->codeData.opsVector.push_back(i);
+                this->codeData.opsLoopVector.push_back(i);
             }
             i += this->codeData.bootCodeVector[i].second - 1;
         }
         else if (this->codeData.bootCodeVector[i].first == "nop")
         {
-            if (initializeOpsVectors)
+            if (initializeOpsLoopVector)
             {
-                this->codeData.opsVector.push_back(i);
+                this->codeData.opsLoopVector.push_back(i);
             }
         }
     }
     return false;
 }
 
-void IntMachine::tryRemoveInfiniteLoop()
+void IntMachine::TryRemoveInfiniteLoop()
 {
     bool infinite = true;
-    for (int op : this->codeData.opsVector)         // Brute force to see if changing ops removes infinite loop
+    for (int op : this->codeData.opsLoopVector)         // Brute force to see if changing ops removes infinite loop
     {
         this->codeData.accumulator = 0;
         if (this->codeData.bootCodeVector[op].first == "jmp")
         {
             this->codeData.bootCodeVector[op].first = "nop";
-            infinite = this->analyzeInfiniteLoop(false);
+            infinite = this->AnalyzeInfiniteLoop(false);
             this->codeData.bootCodeVector[op].first ="jmp";
         }
         else if (this->codeData.bootCodeVector[op].first == "nop")
         {
             this->codeData.bootCodeVector[op].first = "jmp";
-            infinite = this->analyzeInfiniteLoop(false);
+            infinite = this->AnalyzeInfiniteLoop(false);
             this->codeData.bootCodeVector[op].first ="nop";
         }
 
@@ -90,4 +90,4 @@ void IntMachine::tryRemoveInfiniteLoop()
     }
 }
 
-int IntMachine::getAccumulator() {return this->codeData.accumulator;}
+int IntMachine::GetAccumulator() {return this->codeData.accumulator;}
