@@ -39,12 +39,12 @@ int IntMachine::ParseInput()
 
 bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
 {
-    std::unordered_set<int> m;      // Will store index to check if op code has already been called
+    std::unordered_set<int> indexSet;      // Will store index to check if op code has already been called
     for (int i = 0; i < this->codeData.instructionVector.size(); i++)
     {
-        if (m.find(i) != m.end()) return true;
+        if (indexSet.find(i) != indexSet.end()) return true;
 
-        m.insert(i);
+        indexSet.insert(i);
         if (this->codeData.instructionVector[i].opCode == "acc")
         {
             this->codeData.accumulator += this->codeData.instructionVector[i].value;
