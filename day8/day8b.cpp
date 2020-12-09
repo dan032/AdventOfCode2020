@@ -9,8 +9,8 @@ int main()
     int successful = machine.ParseInput();
     assert(successful != -1);
 
-    machine.AnalyzeInfiniteLoop(true);
-    machine.TryRemoveInfiniteLoop();
+    machine.AnalyzeLoop();
+    machine.RemoveInfiniteLoop();
     std::cout << machine.GetAccumulator() << std::endl;
     return EXIT_SUCCESS;
 }

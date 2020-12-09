@@ -7,7 +7,8 @@
 
 IntCodeMachine::IntCodeMachine(std::string filename)
 {
-    this->codeData.accumulator = 0;
+    this->accumulator = 0;
+    this->programCounter = 0;
     this->filename = std::move(filename);
 }
 
@@ -24,71 +25,101 @@ int IntCodeMachine::ParseInput()
         return -1;
     }
 
-    while(file.good())                  // Populate vector with all op codes and their values
+    while(file.good())
     {
         getline(file, line);
         operation = line.substr(0, line.find(' '));
         value = stoi(line.substr((line.find(' '))));
-        instruction.opCode = operation;
+        instruction.operation = ConvertStringToEnum(operation);
         instruction.value = value;
         this->codeData.instructionVector.push_back(instruction);
     }
+
     file.close();
     return 0;
 }
 
-bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsIndexVector)
+bool IntCodeMachine::AnalyzeLoop()
 {
-    std::unordered_set<int> indexSet;      // Will store index to check if op code has already been called
-    for (int i = 0; i < this->codeData.instructionVector.size(); i++)
+    while (this->programCounter < this->codeData.instructionVector.size())
     {
-        if (indexSet.find(i) != indexSet.end()) return true;
-
-        indexSet.insert(i);
-        if (this->codeData.instructionVector[i].opCode == "acc")
+        if (!this->codeData.instructionVector[this->programCounter].executed)
         {
-            this->codeData.accumulator += this->codeData.instructionVector[i].value;
+            this->Execute();
         }
-        else if (this->codeData.instructionVector[i].opCode == "jmp")
-        {
-            if (initializeOpsIndexVector)
-            {
-                this->codeData.opsIndexVector.push_back(i);
-            }
-            i += this->codeData.instructionVector[i].value - 1;
-        }
-        else if (this->codeData.instructionVector[i].opCode == "nop")
-        {
-            if (initializeOpsIndexVector)
-            {
-                this->codeData.opsIndexVector.push_back(i);
-            }
+        else{
+            return true;
         }
     }
     return false;
 }
 
-void IntCodeMachine::TryRemoveInfiniteLoop()
+void IntCodeMachine::Execute()
+{
+    switch (this->codeData.instructionVector[this->programCounter].operation)
+    {
+        case jmp:
+            this->codeData.instructionVector[this->programCounter].executed = true;
+            this->codeData.opsIndexVector.push_back(this->programCounter);
+            this->programCounter += this->codeData.instructionVector[this->programCounter].value;
+            return;
+
+        case nop:
+            this->codeData.instructionVector[this->programCounter].executed = true;
+            this->codeData.opsIndexVector.push_back(this->programCounter);
+            this->programCounter++;
+            return;
+
+        case acc:
+            this->codeData.instructionVector[this->programCounter].executed = true;
+            this->accumulator += this->codeData.instructionVector[this->programCounter].value;
+            this->programCounter++;
+            return;
+    }
+}
+
+void IntCodeMachine::RemoveInfiniteLoop()
 {
     bool infinite = true;
     for (int idx : this->codeData.opsIndexVector)         // Brute force to see if changing ops removes infinite loop
     {
-        this->codeData.accumulator = 0;
-        if (this->codeData.instructionVector[idx].opCode == "jmp")
+        this->Reset();
+        switch(this->codeData.instructionVector[idx].operation)
         {
-            this->codeData.instructionVector[idx].opCode = "nop";
-            infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.instructionVector[idx].opCode ="jmp";
-        }
-        else if (this->codeData.instructionVector[idx].opCode == "nop")
-        {
-            this->codeData.instructionVector[idx].opCode = "jmp";
-            infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.instructionVector[idx].opCode ="nop";
+            case jmp:
+                this->codeData.instructionVector[idx].operation = nop;
+                infinite = this->AnalyzeLoop();
+                this->codeData.instructionVector[idx].operation = jmp;
+                break;
+
+            case nop:
+                this->codeData.instructionVector[idx].operation = jmp;
+                infinite = this->AnalyzeLoop();
+                this->codeData.instructionVector[idx].operation = nop;
+
+            default:
+                break;
         }
 
         if (!infinite) break;
     }
 }
 
-int IntCodeMachine::GetAccumulator() {return this->codeData.accumulator;}
+int IntCodeMachine::GetAccumulator() {return this->accumulator;}
+
+void IntCodeMachine::Reset()
+{
+    for (auto & instruction : this->codeData.instructionVector)
+    {
+        instruction.executed = false;
+    }
+    this->programCounter = 0;
+    this->accumulator = 0;
+}
+
+opCode IntCodeMachine::ConvertStringToEnum(std::string const &string)
+{
+    if (string == "jmp") return jmp;
+    if (string == "acc") return acc;
+    if (string == "nop") return nop;
+}

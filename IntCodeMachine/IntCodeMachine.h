@@ -10,13 +10,19 @@
 #include <unordered_set>
 #include <fstream>
 
+enum opCode{
+    jmp,
+    acc,
+    nop
+};
+
 typedef struct {
-    std::string opCode;
-    int value = 0;
+    opCode operation;
+    int value;
+    bool executed;
 } instruction_t;
 
 typedef struct {
-    int accumulator;
     std::vector<int> opsIndexVector;
     std::vector<instruction_t> instructionVector;
 } codeData_t;
@@ -25,11 +31,17 @@ class IntCodeMachine{
 private:
     std::string filename;
     codeData_t codeData;
+    int accumulator;
+    int programCounter;
+
+    static opCode ConvertStringToEnum(std::string const &string);
 public:
     explicit IntCodeMachine(std::string filename);
     int ParseInput();
-    bool AnalyzeInfiniteLoop(bool initializeOpsIndexVector);
-    void TryRemoveInfiniteLoop();
+    bool AnalyzeLoop();
+    void RemoveInfiniteLoop();
     int GetAccumulator();
+    void Reset();
+    void Execute();
 };
 #endif //AOC2020_INTCODEMACHINE_H
