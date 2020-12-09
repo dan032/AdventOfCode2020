@@ -25,8 +25,7 @@ int main()
         v.push_back(stol(line));
     }
 
-    int l = 0;
-    int r = 25;
+    int l = 0, r = 25;
 
     bool found;
     while(r < v.size())
