@@ -28,13 +28,13 @@ int main()
     int l = 0;
     int r = 25;
 
-    bool success;
+    bool found;
     while(r < v.size())
     {
 
-        success = checkSum(v, l, r);
+        found = checkSum(v, l, r);
 
-        if (!success)
+        if (!found)
         {
             cout << v[r] << endl;
             break;
