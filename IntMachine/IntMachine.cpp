@@ -15,7 +15,7 @@ int IntMachine::ParseInput()
 {
     int value = 0;
     std::string line, operation;
-    std::pair<std::string, int> opPair;
+    instruction_t instruction;
     std::ifstream file(this->filename);
 
     if (!file.is_open())
@@ -29,8 +29,9 @@ int IntMachine::ParseInput()
         getline(file, line);
         operation = line.substr(0, line.find(' '));
         value = stoi(line.substr((line.find(' '))));
-        opPair = make_pair(operation, value);
-        this->codeData.bootCodeVector.push_back(opPair);
+        instruction.opCode = operation;
+        instruction.value = value;
+        this->codeData.instructionVector.push_back(instruction);
     }
     file.close();
     return 0;
@@ -39,24 +40,24 @@ int IntMachine::ParseInput()
 bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
 {
     std::unordered_set<int> m;      // Will store index to check if op code has already been called
-    for (int i = 0; i < this->codeData.bootCodeVector.size(); i++)
+    for (int i = 0; i < this->codeData.instructionVector.size(); i++)
     {
         if (m.find(i) != m.end()) return true;
 
         m.insert(i);
-        if (this->codeData.bootCodeVector[i].first == "acc")
+        if (this->codeData.instructionVector[i].opCode == "acc")
         {
-            this->codeData.accumulator += this->codeData.bootCodeVector[i].second;
+            this->codeData.accumulator += this->codeData.instructionVector[i].value;
         }
-        else if (this->codeData.bootCodeVector[i].first == "jmp")
+        else if (this->codeData.instructionVector[i].opCode == "jmp")
         {
             if (initializeOpsLoopVector)
             {
                 this->codeData.opsLoopVector.push_back(i);
             }
-            i += this->codeData.bootCodeVector[i].second - 1;
+            i += this->codeData.instructionVector[i].value - 1;
         }
-        else if (this->codeData.bootCodeVector[i].first == "nop")
+        else if (this->codeData.instructionVector[i].opCode == "nop")
         {
             if (initializeOpsLoopVector)
             {
@@ -73,17 +74,17 @@ void IntMachine::TryRemoveInfiniteLoop()
     for (int op : this->codeData.opsLoopVector)         // Brute force to see if changing ops removes infinite loop
     {
         this->codeData.accumulator = 0;
-        if (this->codeData.bootCodeVector[op].first == "jmp")
+        if (this->codeData.instructionVector[op].opCode == "jmp")
         {
-            this->codeData.bootCodeVector[op].first = "nop";
+            this->codeData.instructionVector[op].opCode = "nop";
             infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.bootCodeVector[op].first ="jmp";
+            this->codeData.instructionVector[op].opCode ="jmp";
         }
-        else if (this->codeData.bootCodeVector[op].first == "nop")
+        else if (this->codeData.instructionVector[op].opCode == "nop")
         {
-            this->codeData.bootCodeVector[op].first = "jmp";
+            this->codeData.instructionVector[op].opCode = "jmp";
             infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.bootCodeVector[op].first ="nop";
+            this->codeData.instructionVector[op].opCode ="nop";
         }
 
         if (!infinite) break;

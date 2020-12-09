@@ -11,9 +11,14 @@
 #include <fstream>
 
 typedef struct {
+    std::string opCode;
+    int value = 0;
+} instruction_t;
+
+typedef struct {
     int accumulator;
     std::vector<int> opsLoopVector;
-    std::vector<std::pair<std::string, int>> bootCodeVector;
+    std::vector<instruction_t> instructionVector;
 } CodeData;
 
 class IntMachine{
