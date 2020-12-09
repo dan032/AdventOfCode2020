@@ -19,12 +19,12 @@ typedef struct {
     int accumulator;
     std::vector<int> opsLoopVector;
     std::vector<instruction_t> instructionVector;
-} CodeData;
+} codeData_t;
 
 class IntMachine{
 private:
     std::string filename;
-    CodeData codeData;
+    codeData_t codeData;
 public:
     explicit IntMachine(std::string filename);
     int ParseInput();
