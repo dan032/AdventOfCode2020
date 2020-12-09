@@ -95,6 +95,7 @@ void IntCodeMachine::RemoveInfiniteLoop()
                 this->codeData.instructionVector[idx].operation = jmp;
                 infinite = this->AnalyzeLoop();
                 this->codeData.instructionVector[idx].operation = nop;
+                break;
 
             default:
                 break;
