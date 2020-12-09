@@ -28,20 +28,16 @@ int main()
 
     while(r < v.size())
     {
-        long total = 0;
+        long total = 0, min = v[l], max = v[l];
         for (int i = l; i < r; i++)
         {
             total += v[i];
+            min = v[i] < min ? v[i] : min;
+            max = v[i] > max ? v[i] : max;
         }
 
         if (total == goal)
         {
-            long min = v[l], max = v[l];
-            for (int i = l; i < r; i++)
-            {
-                min = v[i] < min ? v[i] : min;
-                max = v[i] > max ? v[i] : max;
-            }
             cout << min + max << endl;
             break;
         }
