@@ -2,16 +2,14 @@
 #include <cassert>
 #include "../IntMachine/IntMachine.h"
 
-using namespace std;
-
 int main()
 {
-    string filename = R"(C:\Users\Dan\Desktop\AOC2020\day8\input.txt)";
+    std::string filename = R"(C:\Users\Dan\Desktop\AOC2020\day8\input.txt)";
     IntMachine machine = IntMachine(filename);
-    int successful = machine.parseInput();
+    int successful = machine.ParseInput();
     assert(successful != -1);
 
-    machine.analyzeInfiniteLoop(false);
-    cout << machine.getAccumulator() << endl;
+    machine.AnalyzeInfiniteLoop(false);
+    std::cout << machine.GetAccumulator() << std::endl;
     return EXIT_SUCCESS;
 }
