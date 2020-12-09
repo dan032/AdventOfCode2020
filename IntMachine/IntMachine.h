@@ -17,7 +17,7 @@ typedef struct {
 
 typedef struct {
     int accumulator;
-    std::vector<int> opsLoopVector;
+    std::vector<int> opsIndexVector;
     std::vector<instruction_t> instructionVector;
 } codeData_t;
 

@@ -53,7 +53,7 @@ bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
         {
             if (initializeOpsLoopVector)
             {
-                this->codeData.opsLoopVector.push_back(i);
+                this->codeData.opsIndexVector.push_back(i);
             }
             i += this->codeData.instructionVector[i].value - 1;
         }
@@ -61,7 +61,7 @@ bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
         {
             if (initializeOpsLoopVector)
             {
-                this->codeData.opsLoopVector.push_back(i);
+                this->codeData.opsIndexVector.push_back(i);
             }
         }
     }
@@ -71,20 +71,20 @@ bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
 void IntMachine::TryRemoveInfiniteLoop()
 {
     bool infinite = true;
-    for (int op : this->codeData.opsLoopVector)         // Brute force to see if changing ops removes infinite loop
+    for (int idx : this->codeData.opsIndexVector)         // Brute force to see if changing ops removes infinite loop
     {
         this->codeData.accumulator = 0;
-        if (this->codeData.instructionVector[op].opCode == "jmp")
+        if (this->codeData.instructionVector[idx].opCode == "jmp")
         {
-            this->codeData.instructionVector[op].opCode = "nop";
+            this->codeData.instructionVector[idx].opCode = "nop";
             infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.instructionVector[op].opCode ="jmp";
+            this->codeData.instructionVector[idx].opCode ="jmp";
         }
-        else if (this->codeData.instructionVector[op].opCode == "nop")
+        else if (this->codeData.instructionVector[idx].opCode == "nop")
         {
-            this->codeData.instructionVector[op].opCode = "jmp";
+            this->codeData.instructionVector[idx].opCode = "jmp";
             infinite = this->AnalyzeInfiniteLoop(false);
-            this->codeData.instructionVector[op].opCode ="nop";
+            this->codeData.instructionVector[idx].opCode ="nop";
         }
 
         if (!infinite) break;
