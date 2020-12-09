@@ -4,8 +4,9 @@
 #include <unordered_set>
 #include <deque>
 
-
 using namespace std;
+bool checkSum(deque<long>  q, vector<long> v, int r);
+
 int main()
 {
     string line;
@@ -34,19 +35,13 @@ int main()
         q.push_back(v[i]);
     }
 
+    bool success;
     while(r < v.size())
     {
-        unordered_set<long> s;
 
-        for (int i = 0; i < q.size(); i++)
-        {
-            for (int j = i + 1; j < q.size(); j++)
-            {
-                s.insert(q[i] + q[j]);
-            }
-        }
+        success = checkSum(q, v, r);
 
-        if (s.find(v[r]) == s.end())
+        if (!success)
         {
             cout << v[r] << endl;
             break;
@@ -58,4 +53,20 @@ int main()
 
     file.close();
     return EXIT_SUCCESS;
+}
+
+bool checkSum(deque<long>  q, vector<long> v, int r)
+{
+    bool found = false;
+    for (int i = 0; i < q.size(); i++)
+    {
+        for (int j = i + 1; j < q.size(); j++)
+        {
+            if (q[i] + q[j] == v[r])
+            {
+                found = true;
+            }
+        }
+    }
+    return found;
 }
