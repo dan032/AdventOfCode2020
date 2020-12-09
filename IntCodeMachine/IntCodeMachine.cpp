@@ -56,22 +56,21 @@ bool IntCodeMachine::AnalyzeLoop()
 
 void IntCodeMachine::Execute()
 {
+    this->codeData.instructionVector[this->programCounter].executed = true;
+
     switch (this->codeData.instructionVector[this->programCounter].operation)
     {
         case jmp:
-            this->codeData.instructionVector[this->programCounter].executed = true;
             this->codeData.opsIndexVector.push_back(this->programCounter);
             this->programCounter += this->codeData.instructionVector[this->programCounter].value;
             return;
 
         case nop:
-            this->codeData.instructionVector[this->programCounter].executed = true;
             this->codeData.opsIndexVector.push_back(this->programCounter);
             this->programCounter++;
             return;
 
         case acc:
-            this->codeData.instructionVector[this->programCounter].executed = true;
             this->accumulator += this->codeData.instructionVector[this->programCounter].value;
             this->programCounter++;
             return;
@@ -117,7 +116,7 @@ void IntCodeMachine::Reset()
     this->accumulator = 0;
 }
 
-opCode IntCodeMachine::ConvertStringToEnum(std::string const &string)
+operationCode IntCodeMachine::ConvertStringToEnum(std::string const &string)
 {
     if (string == "jmp") return jmp;
     if (string == "acc") return acc;

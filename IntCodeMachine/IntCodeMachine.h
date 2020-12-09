@@ -10,14 +10,14 @@
 #include <unordered_set>
 #include <fstream>
 
-enum opCode{
+enum operationCode{
     jmp,
     acc,
     nop
 };
 
 typedef struct {
-    opCode operation;
+    operationCode operation;
     int value;
     bool executed;
 } instruction_t;
@@ -34,7 +34,7 @@ private:
     int accumulator;
     int programCounter;
 
-    static opCode ConvertStringToEnum(std::string const &string);
+    static operationCode ConvertStringToEnum(std::string const &string);
 public:
     explicit IntCodeMachine(std::string filename);
     int ParseInput();
