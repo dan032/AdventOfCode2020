@@ -1,11 +1,11 @@
 #include <iostream>
 #include <cassert>
-#include "../IntMachine/IntMachine.h"
+#include "../IntCodeMachine/IntCodeMachine.h"
 
 int main()
 {
     std::string filename = R"(C:\Users\Dan\Desktop\AOC2020\day8\input.txt)";
-    IntMachine machine = IntMachine(filename);
+    IntCodeMachine machine = IntCodeMachine(filename);
     int successful = machine.ParseInput();
     assert(successful != -1);
 

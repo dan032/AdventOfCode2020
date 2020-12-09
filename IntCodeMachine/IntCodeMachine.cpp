@@ -2,16 +2,16 @@
 // Created by Dan on 2020-12-08.
 //
 
-#include "IntMachine.h"
+#include "IntCodeMachine.h"
 #include <utility>
 
-IntMachine::IntMachine(std::string filename)
+IntCodeMachine::IntCodeMachine(std::string filename)
 {
     this->codeData.accumulator = 0;
     this->filename = std::move(filename);
 }
 
-int IntMachine::ParseInput()
+int IntCodeMachine::ParseInput()
 {
     int value = 0;
     std::string line, operation;
@@ -37,7 +37,7 @@ int IntMachine::ParseInput()
     return 0;
 }
 
-bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
+bool IntCodeMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
 {
     std::unordered_set<int> indexSet;      // Will store index to check if op code has already been called
     for (int i = 0; i < this->codeData.instructionVector.size(); i++)
@@ -68,7 +68,7 @@ bool IntMachine::AnalyzeInfiniteLoop(bool initializeOpsLoopVector)
     return false;
 }
 
-void IntMachine::TryRemoveInfiniteLoop()
+void IntCodeMachine::TryRemoveInfiniteLoop()
 {
     bool infinite = true;
     for (int idx : this->codeData.opsIndexVector)         // Brute force to see if changing ops removes infinite loop
@@ -91,4 +91,4 @@ void IntMachine::TryRemoveInfiniteLoop()
     }
 }
 
-int IntMachine::GetAccumulator() {return this->codeData.accumulator;}
+int IntCodeMachine::GetAccumulator() {return this->codeData.accumulator;}
